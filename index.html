@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Бизнес-Флора | Цветы оптом и аренда</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700;800&family=Esteban&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Esteban', serif; background: #FFE8BC; color: #2d3e2b; line-height: 1.5; }
+        h1, h2, h3, h4, .logo h1, .hero-title, .section-title, .rent-card h3, .nav-links a, .btn, .rent-price, .contacts-right h3, .filter-btn, .news-text strong, .submit-btn { font-family: 'EB Garamond', serif; }
+        .page { display: flex; flex-direction: column; min-height: 100vh; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        .header { background: #B6C9A8; box-shadow: 0 4px 20px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        .header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; padding-top: 20px; padding-bottom: 20px; max-width: 1200px; }
+        .logo h1 { font-size: 1.8rem; font-weight: 700; color: #2c5e2a; margin-bottom: 4px; letter-spacing: -0.5px; }
+        .logo-sub { font-size: 0.8rem; font-weight: 400; color: #2c5e2a; font-family: 'Esteban', serif; }
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a { text-decoration: none; font-weight: 500; color: #2d3e2b; transition: color 0.2s; font-size: 1rem; }
+        .nav-links a:hover { color: #e27c7c; }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.6rem; color: #2c5e2a; cursor: pointer; }
+        .hero { padding: 80px 0; background: #FFE8BC; }
+        .hero-grid { display: flex; align-items: center; gap: 48px; flex-wrap: wrap; }
+        .hero-content { flex: 1; }
+        .hero-image { flex: 1; text-align: center; }
+        .hero-image img { max-width: 100%; border-radius: 28px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.15); }
+        .hero-title { font-size: 3.2rem; font-weight: 700; color: #2c5e2a; line-height: 1.2; margin-bottom: 24px; }
+        .hero-description { font-size: 1.2rem; color: #4a5b48; margin-bottom: 40px; max-width: 90%; }
+        .hero-buttons { display: flex; gap: 20px; flex-wrap: wrap; }
+        .btn { display: inline-block; padding: 12px 32px; font-size: 1rem; font-weight: 600; border-radius: 40px; cursor: pointer; transition: all 0.2s ease; border: none; }
+        .btn-primary { background-color: #e27c7c; color: white; }
+        .btn-primary:hover { background-color: #cb6363; transform: translateY(-2px); }
+        .btn-secondary { background-color: transparent; border: 2px solid #e27c7c; color: #e27c7c; }
+        .btn-secondary:hover { background-color: #e27c7c; color: white; }
+        .section { padding: 70px 0; background: #FFE8BC; }
+        .section-title { font-size: 2rem; font-weight: 700; text-align: center; color: #2c5e2a; margin-bottom: 40px; position: relative; }
+        .section-title:after { content: ''; display: block; width: 60px; height: 3px; background: #e27c7c; margin: 12px auto 0; border-radius: 3px; }
+        .about-text { text-align: center; max-width: 800px; margin: 0 auto; }
+        .about-text p { margin-bottom: 20px; font-size: 1.05rem; line-height: 1.6; }
+        
+        .price-filters-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        .price-filters-table td {
+            padding: 14px 20px;
+            text-align: center;
+            border-right: 1px solid #efe5db;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1rem;
+            background: #f0ede8;
+        }
+        .price-filters-table td:last-child { border-right: none; }
+        .price-filters-table td.active { background: #e27c7c; color: white; }
+        .price-filters-table td:hover:not(.active) { background: #e0d9ce; }
+        
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        .price-table th, .price-table td {
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid #efe5db;
+        }
+        .price-table th { background: #2c5e2a; color: white; font-weight: 600; }
+        .price-table tr:last-child td { border-bottom: none; }
+        .price-note { margin-top: 20px; font-size: 0.85rem; color: #7a8e79; font-style: italic; }
+        
+        .price-layout {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .price-image-left {
+            flex: 0 0 250px;
+            text-align: center;
+        }
+        .price-image-left img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            background: #f0ede8;
+        }
+        .price-table-wrapper {
+            flex: 1;
+            min-width: 280px;
+        }
+        
+        .price-tab { display: none; }
+        .price-tab.active { display: block; }
+        
+        .rent-cards { display: flex; flex-direction: column; gap: 30px; max-width: 800px; margin: 0 auto; }
+        .rent-card { background: white; border-radius: 24px; padding: 20px; box-shadow: 0 12px 25px -10px rgba(0,0,0,0.08); display: flex; gap: 24px; align-items: flex-start; transition: 0.2s; }
+        .rent-card:hover { transform: translateY(-3px); }
+        .rent-card-img { flex-shrink: 0; width: 120px; height: 120px; border-radius: 16px; overflow: hidden; }
+        .rent-card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .rent-card-content { flex: 1; }
+        .rent-card-content h3 { font-size: 1.5rem; margin-bottom: 10px; color: #2c5e2a; }
+        .rent-card-content p { margin: 4px 0; font-size: 0.95rem; color: #4a5b48; }
+        .rent-price { display: inline-block; margin: 12px 0 16px 0; font-weight: 700; font-size: 1.1rem; color: #e27c7c; background: #fef0e6; padding: 4px 14px; border-radius: 40px; }
+        .rent-btn { background: #e27c7c; color: white; border: none; padding: 8px 24px; border-radius: 40px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: background 0.2s; }
+        .rent-btn:hover { background: #cb6363; }
+        .news-list { max-width: 800px; margin: 0 auto; }
+        .news-item { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 30px; background: #ffffff; padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: box-shadow 0.2s ease; }
+        .news-item:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .news-img { flex-shrink: 0; width: 80px; height: 80px; border-radius: 12px; overflow: hidden; }
+        .news-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .news-text { flex: 1; }
+        .news-text strong { font-size: 1.1rem; color: #2c5e2a; display: block; margin-bottom: 6px; font-weight: 700; }
+        .news-text p { font-size: 0.95rem; color: #4a5b48; line-height: 1.5; }
+        .contacts-section { background: #FFE8BC; }
+        .contacts-grid { display: flex; gap: 48px; flex-wrap: wrap; }
+        .contacts-left, .contacts-right { flex: 1; background: white; padding: 32px; border-radius: 28px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .contacts-left p { margin: 16px 0; font-size: 1rem; }
+        .contacts-right h3 { font-size: 1.5rem; margin-bottom: 24px; color: #2c5e2a; text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 14px 16px; border: 1px solid #e2d9cf; border-radius: 28px; font-family: 'Esteban', serif; font-size: 1rem; outline: none; background: #fff; }
+        .submit-btn { background: #e27c7c; color: white; width: 100%; padding: 14px 20px; border: none; border-radius: 40px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+        .submit-btn:hover { background: #cb6363; transform: translateY(-2px); }
+        .form-note { font-size: 0.8rem; margin-top: 16px; text-align: center; color: #5c6b5a; }
+        .footer { background-color: #B6C9A8; color: #2c5e2a; text-align: center; padding: 32px 0; font-size: 0.85rem; }
+        .copyright { margin-bottom: 8px; }
+        .legal { font-size: 0.75rem; opacity: 0.8; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav-links { display: none; width: 100%; flex-direction: column; text-align: center; gap: 16px; padding: 20px 0 10px; }
+            .nav-links.show { display: flex; }
+            .hero-grid { flex-direction: column; text-align: center; }
+            .hero-title { font-size: 2.2rem; }
+            .price-layout { flex-direction: column; align-items: center; }
+            .price-image-left { margin-bottom: 20px; }
+            .rent-card { flex-direction: column; text-align: center; }
+            .rent-card-img { margin: 0 auto; }
+            .contacts-grid { flex-direction: column; }
+            .price-table th, .price-table td { padding: 10px 12px; font-size: 0.85rem; }
+            .price-filters-table td { padding: 10px 12px; font-size: 0.85rem; }
+        }
+        @media (max-width: 480px) {
+            .container { padding: 0 16px; }
+            .hero-title { font-size: 1.8rem; }
+            .section-title { font-size: 1.5rem; }
+            .price-table th, .price-table td { padding: 8px 10px; font-size: 0.8rem; }
+            .price-image-left { flex: 0 0 180px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="container">
+                <div class="logo"><h1>БИЗНЕС-ФЛОРА</h1><p class="logo-sub">цветы оптом | аренда помещений</p></div>
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home">Главная</a></li><li><a href="#about">О компании</a></li><li><a href="#price">Прайс</a></li>
+                    <li><a href="#rent">Аренда</a></li><li><a href="#news">Новости</a></li><li><a href="#contacts">Контакты</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <section id="home" class="hero">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <h2 class="hero-title">Цветы оптом <br>и коммерческая аренда</h2>
+                    <p class="hero-description">Более 25 лет надёжности. Широкий ассортимент цветов и собственные помещения в аренду в Уфе.</p>
+                    <div class="hero-buttons"><button class="btn btn-primary" id="priceBtn">Прайс</button><button class="btn btn-secondary" id="objectsBtn">Объекты</button></div>
+                </div>
+                <div class="hero-image"><img src="img/cvety.png" alt="Цветы оптом"></div>
+            </div>
+        </section>
+
+        <section id="about" class="section about">
+            <div class="container">
+                <h2 class="section-title">О компании</h2>
+                <div class="about-text"><p><strong>ООО "Бизнес-Флора"</strong> — стабильный партнёр с 1998 года. Мы занимаемся оптовой торговлей цветами и растениями, а также сдаём в аренду собственную коммерческую недвижимость.</p><p>Наши склады в Уфе всегда имеют свежие розы, тюльпаны, хризантемы и редкие сорта. Для арендаторов — гибкие условия и удобное расположение.</p></div>
+            </div>
+        </section>
+
+        <section id="price" class="section alt-bg">
+            <div class="container">
+                <h2 class="section-title">Прайс-лист на цветы</h2>
+                
+                <table class="price-filters-table" id="filterTable">
+                    <tr>
+                        <td data-cat="all" class="active">Все цветы</td>
+                        <td data-cat="tulips">Тюльпаны</td>
+                        <td data-cat="chrysanthemums">Хризантемы</td>
+                        <td data-cat="roses">Розы</td>
+                        <td data-cat="other">Другие</td>
+                    </tr>
+                </table>
+
+                <div id="priceContent">
+                    <!-- ВСЕ ЦВЕТЫ (без фото) -->
+                    <div id="tab-all" class="price-tab active">
+                        <div style="overflow-x:auto">
+                            <table class="price-table">
+                                <thead><tr><th>Наименование</th><th>Цена (опт, шт)</th><th>Наличие</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Тюльпан "Белый"</td><td>38 ₽/шт</td><td>в наличии</td></tr>
+                                    <tr><td>Тюльпан "Жёлтый"</td><td>38 ₽/шт</td><td>нет в наличии</td></tr>
+                                    <tr><td>Тюльпан бахромчатый</td><td>45 ₽/шт</td><td>в наличии</td></tr>
+                                    <tr><td>Хризантема кустовая</td><td>65 ₽/шт</td><td>в наличии</td></tr>
+                                    <tr><td>Хризантема одноголовая</td><td>72 ₽/шт</td><td>под заказ</td></tr>
+                                    <tr><td>Роза 'Эквадор' 50 см</td><td>85 ₽/шт</td><td>в наличии</td></tr>
+                                    <tr><td>Роза 'Кения' 60 см</td><td>92 ₽/шт</td><td>в наличии</td></tr>
+                                    <tr><td>Роза пионовидная</td><td>120 ₽/шт</td><td>под заказ</td></tr>
+                                    <tr><td>Гербера</td><td>48 ₽/шт</td><td>в наличии</td></tr>
+                                    <tr><td>Эустома</td><td>98 ₽/шт</td><td>под заказ</td></tr>
+                                    <tr><td>Гипсофила</td><td>42 ₽/шт</td><td>в наличии</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="price-note">* Цены указаны для заказов от 100 шт. Розница обсуждается по телефону.</p>
+                    </div>
+                    
+                    <!-- ТЮЛЬПАНЫ (с фото) -->
+                    <div id="tab-tulips" class="price-tab">
+                        <div class="price-layout">
+                            <div class="price-image-left"><img src="img/tulpany.png" alt="Тюльпаны"></div>
+                            <div class="price-table-wrapper">
+                                <div style="overflow-x:auto">
+                                    <table class="price-table">
+                                        <thead><tr><th>Наименование</th><th>Цена (опт, шт)</th><th>Наличие</th></tr></thead>
+                                        <tbody>
+                                            <tr><td>Тюльпан "Белый"</td><td>38 ₽/шт</td><td>в наличии</td></tr>
+                                            <tr><td>Тюльпан "Жёлтый"</td><td>38 ₽/шт</td><td>нет в наличии</td></tr>
+                                            <tr><td>Тюльпан бахромчатый</td><td>45 ₽/шт</td><td>в наличии</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="price-note">* Цены указаны для заказов от 100 шт. Розница обсуждается по телефону.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ХРИЗАНТЕМЫ (с фото) -->
+                    <div id="tab-chrysanthemums" class="price-tab">
+                        <div class="price-layout">
+                            <div class="price-image-left"><img src="img/hrizantemy.png" alt="Хризантемы"></div>
+                            <div class="price-table-wrapper">
+                                <div style="overflow-x:auto">
+                                    <table class="price-table">
+                                        <thead><tr><th>Наименование</th><th>Цена (опт, шт)</th><th>Наличие</th></tr></thead>
+                                        <tbody>
+                                            <tr><td>Хризантема кустовая</td><td>65 ₽/шт</td><td>в наличии</td></tr>
+                                            <tr><td>Хризантема одноголовая</td><td>72 ₽/шт</td><td>под заказ</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="price-note">* Цены указаны для заказов от 100 шт. Розница обсуждается по телефону.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- РОЗЫ (с фото) -->
+                    <div id="tab-roses" class="price-tab">
+                        <div class="price-layout">
+                            <div class="price-image-left"><img src="img/rozy.png" alt="Розы"></div>
+                            <div class="price-table-wrapper">
+                                <div style="overflow-x:auto">
+                                    <table class="price-table">
+                                        <thead><tr><th>Наименование</th><th>Цена (опт, шт)</th><th>Наличие</th></tr></thead>
+                                        <tbody>
+                                            <tr><td>Роза 'Эквадор' 50 см</td><td>85 ₽/шт</td><td>в наличии</td></tr>
+                                            <tr><td>Роза 'Кения' 60 см</td><td>92 ₽/шт</td><td>в наличии</td></tr>
+                                            <tr><td>Роза пионовидная</td><td>120 ₽/шт</td><td>под заказ</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="price-note">* Цены указаны для заказов от 100 шт. Розница обсуждается по телефону.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ДРУГИЕ ЦВЕТЫ (с фото) -->
+                    <div id="tab-other" class="price-tab">
+                        <div class="price-layout">
+                            <div class="price-image-left"><img src="img/drugie.png" alt="Другие цветы"></div>
+                            <div class="price-table-wrapper">
+                                <div style="overflow-x:auto">
+                                    <table class="price-table">
+                                        <thead><tr><th>Наименование</th><th>Цена (опт, шт)</th><th>Наличие</th></tr></thead>
+                                        <tbody>
+                                            <tr><td>Гербера</td><td>48 ₽/шт</td><td>в наличии</td></tr>
+                                            <tr><td>Эустома</td><td>98 ₽/шт</td><td>под заказ</td></tr>
+                                            <tr><td>Гипсофила</td><td>42 ₽/шт</td><td>в наличии</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="price-note">* Цены указаны для заказов от 100 шт. Розница обсуждается по телефону.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rent" class="section">
+            <div class="container">
+                <h2 class="section-title">Аренда</h2>
+                <div class="rent-cards">
+                    <div class="rent-card" data-rent-title="Складской комплекс №1">
+                        <div class="rent-card-img"><img src="img/sklad.jpg" alt="Склад"></div>
+                        <div class="rent-card-content"><h3>Складской комплекс №1</h3><p>450 м²</p><p>Отопление, ворота 5м</p><p>ул. Цветочная, 11/1</p><div class="rent-price">550 ₽/м² в месяц</div><button class="rent-btn">Запросить просмотр</button></div>
+                    </div>
+                    <div class="rent-card" data-rent-title="Офисное помещение">
+                        <div class="rent-card-img"><img src="img/ofis.jpg" alt="Офис"></div>
+                        <div class="rent-card-content"><h3>Офисное помещение</h3><p>120 м²</p><p>Евроремонт, интернет</p><p>ул. Цветочная, 11/1</p><div class="rent-price">850 ₽/м²</div><button class="rent-btn">Запросить просмотр</button></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="news" class="section alt-bg">
+            <div class="container">
+                <h2 class="section-title">Новости и акции</h2>
+                <div class="news-list">
+                    <div class="news-item"><div class="news-img"><img src="img/tulpany.png" alt="Тюльпаны"></div><div class="news-text"><strong>Сезонная скидка до 20% на тюльпаны</strong><p>При заказе от 100 штук — бесплатная доставка по Уфе.</p></div></div>
+                    <div class="news-item"><div class="news-img"><img src="img/rozy.png" alt="Розы"></div><div class="news-text"><strong>Новые сорта роз из Эквадора</strong><p>15 сортов с длинным стеблем, стойкость до 14 дней.</p></div></div>
+                    <div class="news-item"><div class="news-img"><img src="img/sklad.jpg" alt="Склад"></div><div class="news-text"><strong>Свободные арендные площади</strong><p>Склад 450 м² со скидкой при аренде до конца месяца.</p></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacts" class="section contacts-section">
+            <div class="container">
+                <h2 class="section-title">Контакты</h2>
+                <div class="contacts-grid">
+                    <div class="contacts-left"><p>450096, г. Уфа, ул. Цветочная, д. 11/1</p><p>+7 (347) 123-45-67</p><p>info@biznes-flora.ru</p><p>Пн-Пт: 9:00–18:00 | Сб: 10:00–15:00</p></div>
+                    <div class="contacts-right"><h3>Оставить заявку</h3><form id="callbackForm"><div class="form-group"><input type="text" id="name" placeholder="Ваше имя" required></div><div class="form-group"><input type="tel" id="phone" placeholder="Телефон" required></div><div class="form-group"><textarea id="comment" rows="3" placeholder="Комментарий"></textarea></div><button type="submit" class="submit-btn">Отправить заявку</button><p class="form-note">Менеджер перезвонит в течение 15 минут</p></form></div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer"><div class="container"><p class="copyright">© 2026 ООО "Бизнес-Флора" — оптовая торговля цветами и аренда недвижимости</p><p class="legal">ИНН 0278123456 / ОГРН 1020201234567</p></div></footer>
+    </div>
+
+    <script>
+        const filterCells = document.querySelectorAll('#filterTable td');
+        const tabs = {
+            all: document.getElementById('tab-all'),
+            tulips: document.getElementById('tab-tulips'),
+            chrysanthemums: document.getElementById('tab-chrysanthemums'),
+            roses: document.getElementById('tab-roses'),
+            other: document.getElementById('tab-other')
+        };
+
+        function showTab(category) {
+            Object.values(tabs).forEach(tab => { if (tab) tab.classList.remove('active'); });
+            if (tabs[category]) tabs[category].classList.add('active');
+        }
+
+        if (filterCells.length) {
+            filterCells.forEach(cell => {
+                cell.addEventListener('click', function() {
+                    filterCells.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    showTab(this.getAttribute('data-cat'));
+                });
+            });
+        }
+
+        const menuToggle = document.getElementById('menuToggle'), navLinks = document.getElementById('navLinks');
+        if (menuToggle && navLinks) { menuToggle.addEventListener('click', () => navLinks.classList.toggle('show')); }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) { target.scrollIntoView({ behavior: 'smooth' }); if (navLinks) navLinks.classList.remove('show'); }
+            });
+        });
+
+        document.getElementById('priceBtn')?.addEventListener('click', () => document.getElementById('price').scrollIntoView({ behavior: 'smooth' }));
+        document.getElementById('objectsBtn')?.addEventListener('click', () => document.getElementById('rent').scrollIntoView({ behavior: 'smooth' }));
+
+        const commentField = document.getElementById('comment');
+        document.querySelectorAll('.rent-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const title = btn.closest('.rent-card')?.getAttribute('data-rent-title');
+                if (title && commentField) {
+                    commentField.value = `Интересует помещение: ${title}`;
+                    document.getElementById('contacts').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        document.getElementById('callbackForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name')?.value.trim() || '';
+            const phone = document.getElementById('phone')?.value.trim();
+            if (!phone) return alert('Укажите телефон для связи.');
+            alert(`Спасибо, ${name || 'клиент'}! Заявка принята. Менеджер свяжется с вами.`);
+            e.target.reset();
+            if (commentField) commentField.value = '';
+        });
+    </script>
+</body>
+</html>
